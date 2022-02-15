@@ -1,1 +1,1 @@
-{"virtualbox":{"/var/www/html":{"guestpath":"/var/www/html","hostpath":"/Users/vega/Desktop/sslvagrant","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/var/www/html":{"guestpath":"/var/www/html","hostpath":"/Users/vega/Desktop/WDD353/sslvagrant","disabled":false,"__vagrantfile":true}}}
