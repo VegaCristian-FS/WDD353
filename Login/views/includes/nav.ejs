@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="/">WDD 353</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ms-1"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                <% if(pageName == 'about'){ %>
+                    <li class="nav-item"><a class="nav-link" style='color: orange'  href="about">About</a></li>
+                <%} else {%>
+                    <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="about">About</a></li>
+                <%}%>
+
+                <% if(pageName == 'portfolio'){ %>
+                    <li class="nav-item"><a class="nav-link" style='color: orange'  href="portfolio">Portfolio</a></li>
+                <%} else {%>
+                    <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="portfolio">Portfolio</a></li>
+                <%}%>
+
+                <% if(pageName == 'contacts'){ %>
+                    <li class="nav-item"><a class="nav-link" style='color: orange'  href="contacts">contacts</a></li>
+                <%} else {%>
+                    <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="contacts">contacts</a></li>
+                <%}%>
+
+                <% if(typeof(sess)!= "undefined" && sess.loggedin == true){%>
+                    <% if(pageName == 'profile'){ %>
+                        <li class="nav-item"><a class="nav-link" style='color: orange'  href="profile">profile</a></li>
+                        <%} else {%>
+                            <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="profile">profile</a></li>
+                        <%}%>
+                        <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="logout">logout</a></li>
+                    <% } %> 
+            </ul> 
+        </div>
+        <div>
+            <form action='/login' method='POST'>
+                <input type='email' name='email' id="email" placeholder='email'/> 
+                <input type='password' name='password' id="password" placeholder='password'/>
+                <div>
+                    <button type="submit">Login</button>
+                </div>   
+                <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+                    <ul id="error-list">
+                        <% errors.forEach((error) => { %>
+                            <li class="error-form"><%= error %></li>
+                        <% }) %>
+                    </ul>
+                <% } %>                 
+            </form>
+            
+        </div>        
+    </div>
+</nav>
