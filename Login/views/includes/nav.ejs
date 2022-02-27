@@ -25,14 +25,21 @@
                     <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="contacts">contacts</a></li>
                 <%}%>
 
-                <% if(typeof(sess)!= "undefined" && sess.loggedin == true){%>
+                <% if(typeof(sess) !== "undefined" && sess.loggedIn == true){%>
                     <% if(pageName == 'profile'){ %>
                         <li class="nav-item"><a class="nav-link" style='color: orange'  href="profile">profile</a></li>
                         <%} else {%>
                             <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="profile">profile</a></li>
                         <%}%>
                         <li class="nav-item"><a class="nav-link" style='color: lightgray'  href="logout">logout</a></li>
-                    <% } %> 
+                    <% } %>
+                    <% if (typeof(errs) !== "undefined" && errs.length > 0) { %>
+                        <ul id="error-list">
+                            <% errs.forEach((error) => { %>
+                                <li class="error-form"><%= error %></li>
+                            <% }) %>
+                        </ul>
+                    <% } %> %> 
             </ul> 
         </div>
         <div>
@@ -41,14 +48,7 @@
                 <input type='password' name='password' id="password" placeholder='password'/>
                 <div>
                     <button type="submit">Login</button>
-                </div>   
-                <% if (typeof errors !== "undefined" && errors.length > 0) { %>
-                    <ul id="error-list">
-                        <% errors.forEach((error) => { %>
-                            <li class="error-form"><%= error %></li>
-                        <% }) %>
-                    </ul>
-                <% } %>                 
+                </div> 
             </form>
             
         </div>        

@@ -4,7 +4,6 @@ let bodyParser = require ("body-parser")
 let router = express.Router()
 let app = express();
 let session = require('express-session');
-const { response } = require("express");
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -17,56 +16,66 @@ app.engine("ejs",require("ejs").__express)
 app.use(session({
     secret: "secretKey",
     saveUninitialized:true,
-    resave: false
+    resave: true
 }));
 let sess;
 
 //Routes
 router.get('/', (req, res) =>{
     sess = req.session;
+    let errs = []
     res.render('index', {
         pageName: 'index',
-        sess: sess
+        sess: sess,
+        errs: errs
     })
 })
 
 router.get('/about', (req, res) =>{
     sess = req.session;
+    let errs = []
     res.render('about', {
         pageName: 'about',
-        sess: sess
+        sess: sess,
+        errs: errs
     })
 })
 
 router.get('/portfolio', (req, res) =>{
     sess = req.session;
+    let errs = []
     res.render('portfolio', {
         pageName: 'portfolio',
-        sess: sess
+        sess: sess,
+        errs: errs
     })
 })
 
 router.get('/contacts', (req, res) =>{
     sess = req.session;
+    let errs = []
     res.render('contacts', {
         pageName: 'contacts',
-        sess: sess
+        sess: sess,
+        errs: errs
     })
 })
 
 //Setting up profile routing
 router.get('/profile', (req, res) =>{
     sess = req.session;
-    if(typeof(sess)=="undefined" || sess.loggedin != true){
-        let errors = ["Not authenticated user"]
+    let errs = []
+    if(typeof(sess)=="undefined" || sess.loggedIn != true){
+        errs.push("Not authenticated user");
         res.render('index', {
-        pageName: 'index',
-        errs: errors
-    })
+            pageName: 'index',
+            errs: errs
+        })
     } else {
         res.render("profile", {
             pageName: 'profile',
             sess: sess,
+            errs: errs
         })
     }
 })
@@ -81,63 +90,68 @@ app.get('/logout', (req, res) => {
 
 //Validate form
 router.post('/contacts', (req, res) => {
-    const errors = []
+    const errs = []
     console.log(req.body)
 
     if (req.body.fname.length === 0) {
-        errors.push('First name cannot be blank')
+        errs.push('First name cannot be blank')
     }
     if (req.body.lname.length === 0) {
-        errors.push('Last name cannot be blank')
+        errs.push('Last name cannot be blank')
     }
     if (req.body.address.length === 0) {
-        errors.push('Address cannot be blank')
+        errs.push('Address cannot be blank')
     }
     if (req.body.city.length === 0) {
-        errors.push('City cannot be blank')
+        errs.push('City cannot be blank')
     }
     if (req.body.state.length === 0) {
-        errors.push('State cannot be blank')
+        errs.push('State cannot be blank')
     }
     if (req.body.zip.length === 0) {
-        errors.push('zip cannot be blank')
+        errs.push('zip cannot be blank')
     }
     if (req.body.bio.length === 0) {
-        errors.push('Bio cannot be blank')
+        errs.push('Bio cannot be blank')
     }
     if (parseInt(req.body.age) < 18) {
-        errors.push('Must be over 18 years old')
+        errs.push('Must be over 18 years old')
     }
     if (!req.body.gender) {
-        errors.push('Please choose gender')
+        errs.push('Please choose gender')
     }
     if (!req.body['consent']) {
-        errors.push('Must consent before submitting')
+        errs.push('Must consent before submitting')
     }
     res.render('contacts', {
-        pageName: 'contacts', errors
+        pageName: 'contacts', errs
     })
 })
 
 
 app.post('/login',(req,res) => {
-    let errors = [];
+    let errs = [];
     let email = req.body.email
     let password= req.body.password
-    console.log(1 +email+ " " +password)
 
     if (email === "Mike@aol.com" && password === "abc123"){
         sess = req.session;
         sess.loggedIn = true
+        console.log(sess)
         res.render("profile", {
             pageName:"profile", 
-            sess:sess
+            sess,
+            errs
         })
-    } else {        
-        errors.push('Invalid Credentials');
+    } else {    
+        sess = req.session; 
+        sess.loggedIn = false   
+        console.log(sess)
+        errs.push('Invalid Credentials');
         res.render('index', {
             pageName: 'index',
-            errs: errors
+            errs,
+            sess
         })
     }
 })
